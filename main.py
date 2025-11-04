@@ -113,10 +113,12 @@ class QueryProcessorApp:
                 messagebox.showerror("Erro de Validação", message)
                 return
 
+            print("parsed query", parsed_query)
+
             # HU2: Conversão para Álgebra Relacional
             algebra_expr = self.algebra_converter.convert(parsed_query)
             self.algebra_text.insert(1.0, "PASSO 1 - HEURÍSTICA DE JUNÇÃO:\n\n")
-            self.algebra_text.insert(tk.END, algebra_expr.to_linear_string())
+            self.algebra_text.insert(tk.END, algebra_expr.to_string())
 
             # HU4: Otimização
             optimized_algebra = self.optimizer.optimize(algebra_expr)
@@ -125,12 +127,12 @@ class QueryProcessorApp:
                 tk.END, "PASSO 2 - HEURÍSTICA DE REDUÇÃO DE TUPLAS:\n\n"
             )
             step2 = self.optimizer._apply_tuple_reduction(algebra_expr)
-            self.algebra_text.insert(tk.END, step2.to_linear_string())
+            self.algebra_text.insert(tk.END, step2.to_string())
             self.algebra_text.insert(tk.END, "\n\n" + "=" * 60 + "\n")
             self.algebra_text.insert(
                 tk.END, "PASSO 3 - HEURÍSTICA DE REDUÇÃO DE CAMPOS:\n\n"
             )
-            self.algebra_text.insert(tk.END, optimized_algebra.to_linear_string())
+            self.algebra_text.insert(tk.END, optimized_algebra.to_string())
 
             # HU3: Construção do Grafo
             graph = self.graph_builder.build_graph(optimized_algebra)

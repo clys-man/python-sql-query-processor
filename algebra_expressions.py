@@ -2,9 +2,6 @@ class AlgebraExpression:
     def to_string(self, indent=0):
         raise NotImplementedError
 
-    def to_linear_string(self, indent=0):
-        raise NotImplementedError
-
     def get_tables(self):
         raise NotImplementedError
 
@@ -16,10 +13,10 @@ class Projection(AlgebraExpression):
         self.attributes = attributes
         self.child = child
 
-    def to_linear_string(self, indent=0):
+    def to_string(self, indent=0):
         attrs = ", ".join(self.attributes)
         indent_str = "  " * indent
-        child_str = self.child.to_linear_string(indent + 1)
+        child_str = self.child.to_string(indent + 1)
         return f"{indent_str}π {attrs} (\n{child_str}\n{indent_str})"
 
     def get_tables(self):
@@ -33,10 +30,10 @@ class Selection(AlgebraExpression):
         self.condition = condition
         self.child = child
 
-    def to_linear_string(self, indent=0):
+    def to_string(self, indent=0):
         cond = self.condition.replace(" and ", " ^ ").replace(" AND ", " ^ ")
         indent_str = "  " * indent
-        child_str = self.child.to_linear_string(indent + 1)
+        child_str = self.child.to_string(indent + 1)
         return f"{indent_str}σ {cond} (\n{child_str}\n{indent_str})"
 
     def get_tables(self):
@@ -51,10 +48,10 @@ class Join(AlgebraExpression):
         self.left = left
         self.right = right
 
-    def to_linear_string(self, indent=0):
+    def to_string(self, indent=0):
         indent_str = "  " * indent
-        left_str = self.left.to_linear_string(indent + 1)
-        right_str = self.right.to_linear_string(indent + 1)
+        left_str = self.left.to_string(indent + 1)
+        right_str = self.right.to_string(indent + 1)
         return f"{indent_str}(\n{left_str}\n{indent_str}  ⋈ {self.condition}\n{right_str}\n{indent_str})"
 
     def get_tables(self):
@@ -67,7 +64,7 @@ class Table(AlgebraExpression):
     def __init__(self, name):
         self.name = name
 
-    def to_linear_string(self, indent=0):
+    def to_string(self, indent=0):
         indent_str = "  " * indent
         return f"{indent_str}{self.name}"
 

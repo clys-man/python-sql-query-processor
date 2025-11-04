@@ -176,7 +176,7 @@ class SQLParser:
 
         # Validar colunas nas condições JOIN
         for join in parsed["joins"]:
-            condition = join["condition"]
+            condition = re.sub(r"'(?:''|[^'])*'", "", join["condition"])
             # Extrair colunas da condição (formato: tabela.coluna = tabela.coluna)
             columns_in_condition = re.findall(r"(\w+\.\w+)", condition)
             for col_expr in columns_in_condition:
@@ -194,7 +194,11 @@ class SQLParser:
 
         # Validar colunas no WHERE
         if parsed["where"]:
-            columns_in_where = re.findall(r"(\w+\.\w+)", parsed["where"])
+            where_cleaned = re.sub(r"'(?:''|[^'])*'", "", parsed["where"])
+            columns_in_where = re.findall(
+                r"\b([A-Za-z_]\w*\.[A-Za-z_]\w*)\b", where_cleaned
+            )
+
             for col_expr in columns_in_where:
                 parts = col_expr.split(".")
                 table, column = parts[0], parts[1]
