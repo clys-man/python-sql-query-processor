@@ -1,0 +1,25 @@
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Byte-code files
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.bak
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+
+# Sensitive data (example)
+config.ini
+.env
