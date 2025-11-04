@@ -1,3 +1,5 @@
+![Graph Result](./img/graph.png)
+
 # Processador de Consultas SQL
 
 Sistema de processamento e otimização de consultas SQL desenvolvido para a disciplina de Banco de Dados.
